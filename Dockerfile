@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 # aptリポジトリ
 RUN set -x \
-	&& sed -e 's_http://archive.ubuntu.com/_http://jp.archive.ubuntu.com/_' -i /etc/apt/sources.list
+    && sed -e 's_http://archive.ubuntu.com/_http://jp.archive.ubuntu.com/_' -i /etc/apt/sources.list
 
 # manを有効化
 RUN set -x \
@@ -10,42 +10,42 @@ RUN set -x \
     && apt-get update \
     && dpkg -l | grep ^ii | cut -d' ' -f3 | xargs apt-get install -y --reinstall \
     && apt-get install -y --no-install-recommends man-db manpages-ja manpages-ja-dev \
-    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+&& apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # CA証明書更新
 RUN set -x \
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends ca-certificates \
-	&& apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+    && apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # タイムゾーン
 RUN set -x \
-	&& apt-get update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends tzdata \
-	&& apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* \
+    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
-	&& echo Asia/Tokyo > /etc/timezone
+    && echo Asia/Tokyo > /etc/timezone
 
 # 日本語
 RUN set -x \
-	&& apt-get update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends language-pack-ja-base language-pack-ja \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 ENV LANG=ja_JP.UTF-8
 
 # gosu（entrypoint.shでcode-serverの実行ユーザーにsudoするため）
 RUN set -x \
-	&& apt-get update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends curl \
-	&& curl -fSsL -o /usr/bin/gosu https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64 \
-	&& chmod +x /usr/bin/gosu \
+    && curl -fSsL -o /usr/bin/gosu https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64 \
+    && chmod +x /usr/bin/gosu \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 # code-server
 ARG version=1.31.1-100
 
 RUN set -x \
-	&& apt-get update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends openssl net-tools \
     && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
